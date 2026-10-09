@@ -490,7 +490,7 @@ public sealed partial class ContentWidgetWindow : WidgetWindowBase, IDesktopWidg
 
     private static TodoItemViewModel? GetNextCompactTodoItem(TodoWidgetContentAdapter todo) =>
         todo.ViewModel.Items
-            .Where(item => !item.IsCompleted)
+            .Where(item => !item.IsCompleted && TodoWidgetViewModel.IsInDefaultDueScope(item))
             .OrderByDescending(item => item.IsOverdue)
             .ThenByDescending(item => item.IsImportant)
             .ThenBy(item => item.DueDate ?? DateTimeOffset.MaxValue)

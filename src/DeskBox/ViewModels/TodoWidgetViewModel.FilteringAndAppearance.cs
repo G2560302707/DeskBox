@@ -8,6 +8,10 @@ namespace DeskBox.ViewModels;
 
 public sealed partial class TodoWidgetViewModel
 {
+    // Transient pin: a reminder reveal may need to surface a future-dated item
+    // that the default list scope hides. Cleared on the next manual filter switch.
+    private string? _revealOverrideItemId;
+
     public void ApplyAppearance()
     {
         if (_settingsService is null)
@@ -244,6 +248,13 @@ public sealed partial class TodoWidgetViewModel
 
     private bool ShouldShowItem(TodoItemViewModel item)
     {
+        // A reminder reveal pins one item so a notification click can land on it
+        // even when the default scope would hide it.
+        if (string.Equals(item.Id, _revealOverrideItemId, StringComparison.Ordinal))
+        {
+            return true;
+        }
+
         string? selectedColorMarker = MapColorFilterToMarker(SelectedColorFilter);
         if (selectedColorMarker is not null &&
             !string.Equals(item.ColorMarker, selectedColorMarker, StringComparison.Ordinal))
@@ -260,13 +271,14 @@ public sealed partial class TodoWidgetViewModel
 
         return SelectedFilter switch
         {
-            TodoFilter.Active => !item.IsCompleted,
+            TodoFilter.Active => !item.IsCompleted && IsInDefaultDueScope(item),
             TodoFilter.Today => IsDueToday(item),
             TodoFilter.ThisWeek => IsDueThisWeek(item),
             TodoFilter.ThisMonth => IsDueThisMonth(item),
             TodoFilter.Important => item.IsImportant,
             TodoFilter.Completed => item.IsCompleted,
-            _ => true
+            // All: completed items stay listed, active ones only once due.
+            _ => item.IsCompleted || IsInDefaultDueScope(item)
         };
     }
 
@@ -461,6 +473,18 @@ public sealed partial class TodoWidgetViewModel
     {
         return item.DueDate is { } dueDate &&
                dueDate.ToLocalTime().Date == DateTimeOffset.Now.Date;
+    }
+
+    /// <summary>
+    /// Default list scope for the "All" and "Active" views: undated tasks always
+    /// qualify, dated tasks only once their due date reaches today (overdue
+    /// included). This keeps the next occurrence a recurring task generates out
+    /// of today's list until its own day arrives.
+    /// </summary>
+    public static bool IsInDefaultDueScope(TodoItemViewModel item)
+    {
+        return item.DueDate is not { } dueDate ||
+               dueDate.ToLocalTime().Date <= DateTime.Today;
     }
 
     private static bool IsDueThisWeek(TodoItemViewModel item)

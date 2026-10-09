@@ -10,6 +10,8 @@ public sealed partial class TodoWidgetViewModel
 {
     public void SetFilter(TodoFilter filter)
     {
+        // A manual filter switch drops any reminder reveal pin.
+        _revealOverrideItemId = null;
         SelectedFilter = filter;
     }
 
@@ -36,6 +38,7 @@ public sealed partial class TodoWidgetViewModel
 
     public void SetColorFilter(TodoColorFilter filter)
     {
+        _revealOverrideItemId = null;
         SelectedColorFilter = filter;
     }
 
@@ -445,7 +448,19 @@ public sealed partial class TodoWidgetViewModel
 
         if (!VisibleItems.Contains(item))
         {
-            SelectedFilter = TodoFilter.All;
+            // Fall back to All when the preferred view does not list the item.
+            if (SelectedFilter != TodoFilter.All)
+            {
+                SelectedFilter = TodoFilter.All;
+            }
+
+            if (!VisibleItems.Contains(item))
+            {
+                // A future-dated item falls outside the default scope, so pin it
+                // to keep the notification click pointing at a visible row.
+                _revealOverrideItemId = item.Id;
+                RefreshVisibleItems();
+            }
         }
 
         foreach (var visibleItem in Items)

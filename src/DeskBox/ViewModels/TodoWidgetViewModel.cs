@@ -276,11 +276,16 @@ public sealed partial class TodoWidgetViewModel : ObservableObject, IDisposable
 
     public int TotalCount => Items.Count;
 
-    public int ActiveCount => Items.Count(item => !item.IsCompleted);
+    // Incomplete tasks inside the default list scope (undated or due today-or-earlier).
+    public int ActiveCount => Items.Count(item => !item.IsCompleted && IsInDefaultDueScope(item));
 
     public int CompletedCount => Items.Count(item => item.IsCompleted);
 
-    public int AllFilterCount => ShowCompletedTasks ? TotalCount : ActiveCount;
+    // Every incomplete task regardless of due date; drives the "all done" empty state.
+    private int IncompleteCount => Items.Count(item => !item.IsCompleted);
+
+    // The "All" view lists every completed item plus the active ones in scope.
+    public int AllFilterCount => ShowCompletedTasks ? CompletedCount + ActiveCount : ActiveCount;
 
     public int TodayFilterCount => Items.Count(item => IsDueToday(item) && ShouldCountInNonCompletedFilter(item));
 
@@ -472,7 +477,7 @@ public sealed partial class TodoWidgetViewModel : ObservableObject, IDisposable
     public bool IsAllTasksCompletedEmptyState =>
         !HasVisibleItems &&
         TotalCount > 0 &&
-        ActiveCount == 0 &&
+        IncompleteCount == 0 &&
         SelectedFilter == TodoFilter.All &&
         SelectedColorFilter == TodoColorFilter.All;
 

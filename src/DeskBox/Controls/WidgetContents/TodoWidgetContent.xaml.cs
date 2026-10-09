@@ -777,23 +777,34 @@ public sealed partial class TodoWidgetContent : UserControl
                 return;
             }
 
-            if (!await PlayDetailExitAnimationAsync(item))
-            {
-                return;
-            }
-
-            ViewModel.CloseDetail();
-            ClearTodoListContainerSelection();
-            Focus(FocusState.Programmatic);
-            if (finalizedItem is not null)
-            {
-                TodoListView.ScrollIntoView(finalizedItem);
-            }
+            await CompleteDetailExitAsync(item, finalizedItem);
         }
         finally
         {
             ResetDetailTransition();
         }
+    }
+
+    // Single-pane exit: animate the detail away, drop the selection, and hand
+    // focus back to the list. Returns false when the animation was superseded.
+    private async Task<bool> CompleteDetailExitAsync(
+        TodoItemViewModel expectedItem,
+        TodoItemViewModel? finalizedItem)
+    {
+        if (!await PlayDetailExitAnimationAsync(expectedItem))
+        {
+            return false;
+        }
+
+        ViewModel?.CloseDetail();
+        ClearTodoListContainerSelection();
+        Focus(FocusState.Programmatic);
+        if (finalizedItem is not null)
+        {
+            TodoListView.ScrollIntoView(finalizedItem);
+        }
+
+        return true;
     }
 
     private async Task<bool> PlayDetailExitAnimationAsync(TodoItemViewModel expectedItem)
@@ -835,6 +846,7 @@ public sealed partial class TodoWidgetContent : UserControl
     private async void DetailSaveButton_Click(object sender, RoutedEventArgs e)
     {
         if (_isSavingDetailDraft ||
+            _isClosingDetail ||
             ViewModel?.SelectedDetailItem is not { } item)
         {
             return;
@@ -877,9 +889,25 @@ public sealed partial class TodoWidgetContent : UserControl
                 savedItem = item;
             }
 
-            ApplyMasterDetailVisibility();
-            TodoListView.ScrollIntoView(savedItem);
             ShowTodoStatus("Todo.Status.Saved");
+
+            if (_isDualPane)
+            {
+                ApplyMasterDetailVisibility();
+                TodoListView.ScrollIntoView(savedItem);
+                return;
+            }
+
+            // Narrow layout: saving returns to the list, matching the back button.
+            _isClosingDetail = true;
+            try
+            {
+                await CompleteDetailExitAsync(item, savedItem);
+            }
+            finally
+            {
+                ResetDetailTransition();
+            }
         }
         finally
         {

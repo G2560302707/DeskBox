@@ -767,10 +767,11 @@ public sealed class TodoWidgetViewModelTests : IDisposable
         Assert.NotNull(later);
         Assert.NotNull(sooner);
         Assert.NotNull(completed);
-        var now = DateTimeOffset.Now;
-
-        await viewModel.SetDueDateAsync(later.Id, now.AddHours(3));
-        await viewModel.SetDueDateAsync(sooner.Id, now.AddHours(1));
+        // Keep both due times inside today so the default scope never hides them,
+        // no matter what time of day the suite runs.
+        DateTime today = DateTime.Today;
+        await viewModel.SetDueDateAsync(later.Id, new DateTimeOffset(today.AddHours(18)));
+        await viewModel.SetDueDateAsync(sooner.Id, new DateTimeOffset(today.AddHours(12)));
         await viewModel.SetCompletedAsync(completed.Id, true);
         viewModel.SelectedFilter = TodoFilter.All;
 
@@ -1278,6 +1279,124 @@ public sealed class TodoWidgetViewModelTests : IDisposable
         Assert.Null(item.Item.ReminderDismissedForDueDate);
         var reloaded = await CreateStore("todo-widget").LoadAsync();
         Assert.Null(Assert.Single(reloaded.Items).SnoozedUntil);
+    }
+
+    [Fact]
+    public async Task AllAndActiveFilters_HideFutureDatedTasksButKeepUndatedAndOverdue()
+    {
+        var viewModel = CreateViewModel("todo-widget");
+        await viewModel.InitializeAsync();
+        var undated = await viewModel.AddItemAsync("undated");
+        var today = await viewModel.AddItemAsync("today");
+        var overdue = await viewModel.AddItemAsync("overdue");
+        var tomorrow = await viewModel.AddItemAsync("tomorrow");
+        Assert.NotNull(undated);
+        Assert.NotNull(today);
+        Assert.NotNull(overdue);
+        Assert.NotNull(tomorrow);
+
+        await viewModel.SetDueDatePresetAsync(today.Id, TodoDuePreset.Today);
+        await viewModel.SetDueDateAsync(overdue.Id, DateTimeOffset.Now.AddDays(-1));
+        await viewModel.SetDueDatePresetAsync(tomorrow.Id, TodoDuePreset.Tomorrow);
+
+        string[] expected = new[] { undated.Id, today.Id, overdue.Id }
+            .OrderBy(id => id, StringComparer.Ordinal)
+            .ToArray();
+
+        viewModel.SelectedFilter = TodoFilter.All;
+        Assert.Equal(
+            expected,
+            viewModel.VisibleItems.Select(item => item.Id).OrderBy(id => id, StringComparer.Ordinal));
+
+        viewModel.SelectedFilter = TodoFilter.Active;
+        Assert.Equal(
+            expected,
+            viewModel.VisibleItems.Select(item => item.Id).OrderBy(id => id, StringComparer.Ordinal));
+
+        // Calendar views still surface future-dated tasks.
+        viewModel.SelectedFilter = TodoFilter.ThisMonth;
+        Assert.Contains(tomorrow.Id, viewModel.VisibleItems.Select(item => item.Id));
+    }
+
+    [Fact]
+    public async Task ActiveCount_AndAllFilterCount_TrackTheDefaultScope()
+    {
+        var viewModel = CreateViewModel("todo-widget");
+        await viewModel.InitializeAsync();
+        var today = await viewModel.AddItemAsync("today");
+        var tomorrow = await viewModel.AddItemAsync("tomorrow");
+        Assert.NotNull(today);
+        Assert.NotNull(tomorrow);
+
+        await viewModel.SetDueDatePresetAsync(today.Id, TodoDuePreset.Today);
+        await viewModel.SetDueDatePresetAsync(tomorrow.Id, TodoDuePreset.Tomorrow);
+
+        Assert.Equal(1, viewModel.ActiveCount);
+        Assert.Equal(1, viewModel.AllFilterCount);
+
+        viewModel.SelectedFilter = TodoFilter.All;
+        Assert.Equal(viewModel.VisibleItems.Count, viewModel.AllFilterCount);
+    }
+
+    [Fact]
+    public async Task IsAllTasksCompletedEmptyState_IsFalseWhenOnlyFutureTasksRemain()
+    {
+        var viewModel = CreateViewModel("todo-widget");
+        await viewModel.InitializeAsync();
+        var tomorrow = await viewModel.AddItemAsync("tomorrow");
+        Assert.NotNull(tomorrow);
+        await viewModel.SetDueDatePresetAsync(tomorrow.Id, TodoDuePreset.Tomorrow);
+
+        viewModel.SelectedFilter = TodoFilter.All;
+
+        Assert.Empty(viewModel.VisibleItems);
+        Assert.False(viewModel.IsAllTasksCompletedEmptyState);
+    }
+
+    [Fact]
+    public async Task SetCompletedAsync_OnDailyRecurringTask_HidesNextOccurrenceFromDefaultViews()
+    {
+        var viewModel = CreateViewModel("todo-widget");
+        await viewModel.InitializeAsync();
+        var item = await viewModel.AddItemAsync("daily standup");
+        Assert.NotNull(item);
+
+        await viewModel.SetDueDatePresetAsync(item.Id, TodoDuePreset.Today);
+        await viewModel.SetRecurrenceAsync(item.Id, TodoRecurrenceMode.Daily);
+        Assert.True(await viewModel.SetCompletedAsync(item.Id, true));
+
+        // The next occurrence is persisted but stays out of today's list.
+        Assert.Equal(2, viewModel.Items.Count);
+        TodoItemViewModel next = Assert.Single(viewModel.Items.Where(entry => entry.Id != item.Id));
+        Assert.False(next.IsCompleted);
+        Assert.False(TodoWidgetViewModel.IsInDefaultDueScope(next));
+
+        viewModel.SelectedFilter = TodoFilter.All;
+        Assert.Empty(viewModel.VisibleItems);
+        Assert.Equal(0, viewModel.ActiveCount);
+    }
+
+    [Fact]
+    public async Task FocusReminderItem_RevealsFutureDatedTaskUntilTheFilterChanges()
+    {
+        var viewModel = CreateViewModel("todo-widget");
+        await viewModel.InitializeAsync();
+        var tomorrow = await viewModel.AddItemAsync("tomorrow");
+        Assert.NotNull(tomorrow);
+        await viewModel.SetDueDatePresetAsync(tomorrow.Id, TodoDuePreset.Tomorrow);
+
+        viewModel.SelectedFilter = TodoFilter.All;
+        Assert.Empty(viewModel.VisibleItems);
+
+        var revealed = viewModel.FocusReminderItem(tomorrow.Id, preferTodayFilter: false);
+
+        Assert.NotNull(revealed);
+        Assert.Contains(tomorrow.Id, viewModel.VisibleItems.Select(item => item.Id));
+
+        // A manual filter switch drops the pin.
+        viewModel.SetFilter(TodoFilter.Today);
+        viewModel.SetFilter(TodoFilter.All);
+        Assert.Empty(viewModel.VisibleItems);
     }
 
     public void Dispose()
