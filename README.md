@@ -6,15 +6,13 @@ English | [简体中文](README.zh-CN.md)
 
 > External pull requests are not being merged at this time — bug reports, ideas, and discussions are very welcome via Issues / Discussions. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-[![CI](https://github.com/Tianyu199509/DeskBox/actions/workflows/ci.yml/badge.svg)](https://github.com/Tianyu199509/DeskBox/actions/workflows/ci.yml)
-[![Release 1.5.5](https://img.shields.io/badge/release-1.5.5-2563EB.svg)](https://github.com/Tianyu199509/DeskBox/releases/tag/v1.5.5)
+[![CI](https://github.com/G2560302707/DeskBox/actions/workflows/ci.yml/badge.svg)](https://github.com/G2560302707/DeskBox/actions/workflows/ci.yml)
+[![Release 1.5.5](https://img.shields.io/badge/release-1.5.5-2563EB.svg)](https://github.com/G2560302707/DeskBox/releases/tag/v1.5.5)
 [![Windows 10/11](https://img.shields.io/badge/Windows-10%2F11-0078D4.svg)](#system-requirements)
 [![x64 and ARM64](https://img.shields.io/badge/architecture-x64%20%7C%20ARM64-5C2D91.svg)](#download)
 [![License: GPL v3](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/Tianyu199509/DeskBox?style=flat&color=yellow)](https://github.com/Tianyu199509/DeskBox/stargazers)
-[![Downloads](https://img.shields.io/github/downloads/Tianyu199509/DeskBox/total?style=flat&color=brightgreen)](https://github.com/Tianyu199509/DeskBox/releases)
-<a href="https://hellogithub.com/repository/Tianyu199509/DeskBox" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=f0cae3cb81f3496b9b6ead91194dc6f8&claim_uid=x4er8iQsXYT3aMN&theme=small" alt="Featured｜HelloGitHub" /></a>
-
+[![GitHub stars](https://img.shields.io/github/stars/G2560302707/DeskBox?style=flat&color=yellow)](https://github.com/G2560302707/DeskBox/stargazers)
+[![Downloads](https://img.shields.io/github/downloads/G2560302707/DeskBox/total?style=flat&color=brightgreen)](https://github.com/G2560302707/DeskBox/releases)
 ![DeskBox Windows desktop organizer with file, todo, search, weather, and music widgets](docs/images/brand/readme-hero-1-3-7-dark-en.png)
 
 DeskBox organizes desktop files, maps existing folders, and keeps everyday tools close without replacing Explorer or changing how your files work. Its real-folder-backed widgets make it a modern open-source alternative to tools such as Stardock Fences, while Glance, todos, quick notes, search, weather, and music controls remain useful extras rather than the product's core promise.
@@ -41,10 +39,10 @@ All twelve selectable languages share the same resource-key and formatting-place
 
 ## Download
 
-DeskBox 1.5.5 is prepared for release. The [GitHub Releases](https://github.com/Tianyu199509/DeskBox/releases/tag/v1.5.5) download links below will become available after publication.
+DeskBox 1.5.5 is prepared for release. The [GitHub Releases](https://github.com/G2560302707/DeskBox/releases/tag/v1.5.5) download links below will become available after publication.
 
-- [DeskBox 1.5.5 for x64](https://github.com/Tianyu199509/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_x64.exe), recommended for most Intel and AMD PCs.
-- [DeskBox 1.5.5 for ARM64](https://github.com/Tianyu199509/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_arm64.exe), recommended for Snapdragon, Surface Pro X, and other Windows on ARM PCs.
+- [DeskBox 1.5.5 for x64](https://github.com/G2560302707/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_x64.exe), recommended for most Intel and AMD PCs.
+- [DeskBox 1.5.5 for ARM64](https://github.com/G2560302707/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_arm64.exe), recommended for Snapdragon, Surface Pro X, and other Windows on ARM PCs.
 
 Both packages are Full Native AOT builds with the matching private Windows App Runtime 2.4, so they can install offline without downloading a separate .NET 10 or Windows App Runtime package.
 
@@ -305,16 +303,17 @@ docs\releases               release copy and test checklists
 
 ## Feedback and localization
 
-DeskBox is currently developed and maintained by a solo developer. External pull requests are not being accepted at this stage so the project can keep a consistent architecture and clear copyright boundaries, but bug reports, feature requests, translations, and UI/UX feedback are welcome through [GitHub Issues](https://github.com/Tianyu199509/DeskBox/issues).
+DeskBox is currently developed and maintained by a solo developer. External pull requests are not being accepted at this stage so the project can keep a consistent architecture and clear copyright boundaries, but bug reports, feature requests, translations, and UI/UX feedback are welcome through [GitHub Issues](https://github.com/G2560302707/DeskBox/issues).
 
 Special thanks to [@magisph](https://github.com/magisph) for the Brazilian Portuguese localization.
 
-You can also visit [deskbox.fun](https://deskbox.fun) or use the contact information in the app's About page.
+You can also reach the maintainer at [2560302707@qq.com](mailto:2560302707@qq.com) or use the contact information in the app's About page.
 
 ## Author and license
 
-- Developer: Tianyu Zhu
-- Repository: <https://github.com/Tianyu199509/DeskBox>
+- Developer: Guo Jiaqi (郭嘉琦)
+- Contact: [2560302707@qq.com](mailto:2560302707@qq.com)
+- Repository: <https://github.com/G2560302707/DeskBox>
 - License: [GPL-3.0-only](LICENSE)
 
 Earlier DeskBox versions already published under the MIT License remain available under that license. The change is not retroactive.
@@ -324,4 +323,4 @@ Earlier DeskBox versions already published under the MIT License remain availabl
 
 If DeskBox helps you, a star ⭐ is a big encouragement for this solo project.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Tianyu199509/DeskBox&type=Date)](https://star-history.com/#Tianyu199509/DeskBox&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=G2560302707/DeskBox&type=Date)](https://star-history.com/#G2560302707/DeskBox&Date)

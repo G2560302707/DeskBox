@@ -6,13 +6,13 @@
 
 > 目前暂不接受外部 PR 合并——欢迎通过 Issue / Discussion 提交 Bug、功能建议与技术讨论，详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-[![CI](https://github.com/Tianyu199509/DeskBox/actions/workflows/ci.yml/badge.svg)](https://github.com/Tianyu199509/DeskBox/actions/workflows/ci.yml)
-[![1.5.5 版本](https://img.shields.io/badge/release-1.5.5-2563EB.svg)](https://github.com/Tianyu199509/DeskBox/releases/tag/v1.5.5)
+[![CI](https://github.com/G2560302707/DeskBox/actions/workflows/ci.yml/badge.svg)](https://github.com/G2560302707/DeskBox/actions/workflows/ci.yml)
+[![1.5.5 版本](https://img.shields.io/badge/release-1.5.5-2563EB.svg)](https://github.com/G2560302707/DeskBox/releases/tag/v1.5.5)
 [![Windows 10/11](https://img.shields.io/badge/Windows-10%2F11-0078D4.svg)](#环境要求)
 [![x64 and ARM64](https://img.shields.io/badge/architecture-x64%20%7C%20ARM64-5C2D91.svg)](#下载)
 [![License: GPL v3](https://img.shields.io/badge/license-GPLv3-blue.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/Tianyu199509/DeskBox?style=flat&color=yellow)](https://github.com/Tianyu199509/DeskBox/stargazers)
-[![Downloads](https://img.shields.io/github/downloads/Tianyu199509/DeskBox/total?style=flat&color=brightgreen)](https://github.com/Tianyu199509/DeskBox/releases)
+[![GitHub stars](https://img.shields.io/github/stars/G2560302707/DeskBox?style=flat&color=yellow)](https://github.com/G2560302707/DeskBox/stargazers)
+[![Downloads](https://img.shields.io/github/downloads/G2560302707/DeskBox/total?style=flat&color=brightgreen)](https://github.com/G2560302707/DeskBox/releases)
 
 ![DeskBox Windows 桌面整理工具，包含文件、待办、搜索、天气和音乐格子](docs/images/brand/readme-hero-1-3-7-dark-zh-cn.png)
 
@@ -40,10 +40,10 @@ DeskBox 使用贴近 Windows 原生体验的材质，同时保留普通桌面文
 
 ## 下载
 
-DeskBox 1.5.5 已进入发版准备阶段。下方 [GitHub Releases](https://github.com/Tianyu199509/DeskBox/releases/tag/v1.5.5) 下载链接会在正式发布后生效。
+DeskBox 1.5.5 已进入发版准备阶段。下方 [GitHub Releases](https://github.com/G2560302707/DeskBox/releases/tag/v1.5.5) 下载链接会在正式发布后生效。
 
-- [DeskBox 1.5.5 x64 安装包](https://github.com/Tianyu199509/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_x64.exe)，推荐大多数 Intel 和 AMD 电脑使用。
-- [DeskBox 1.5.5 ARM64 安装包](https://github.com/Tianyu199509/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_arm64.exe)，推荐骁龙、Surface Pro X 等 Windows on ARM 电脑使用。
+- [DeskBox 1.5.5 x64 安装包](https://github.com/G2560302707/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_x64.exe)，推荐大多数 Intel 和 AMD 电脑使用。
+- [DeskBox 1.5.5 ARM64 安装包](https://github.com/G2560302707/DeskBox/releases/download/v1.5.5/DeskBox_Setup_1.5.5_arm64.exe)，推荐骁龙、Surface Pro X 等 Windows on ARM 电脑使用。
 
 两个安装包都是 Full Native AOT 构建，并内置对应架构的私有 Windows App Runtime 2.4，可离线安装，不需要另外下载 .NET 10 或 Windows App Runtime。
 
@@ -302,16 +302,17 @@ docs\releases               版本发布文案和测试清单
 
 ## 反馈与本地化
 
-DeskBox 目前由个人独立开发和维护。为了保持架构一致性与后续版权边界，现阶段暂不接受外部 Pull Request；欢迎通过 [GitHub Issues](https://github.com/Tianyu199509/DeskBox/issues) 提交问题、功能建议、翻译和 UI/UX 反馈。
+DeskBox 目前由个人独立开发和维护。为了保持架构一致性与后续版权边界，现阶段暂不接受外部 Pull Request；欢迎通过 [GitHub Issues](https://github.com/G2560302707/DeskBox/issues) 提交问题、功能建议、翻译和 UI/UX 反馈。
 
 特别感谢 [@magisph](https://github.com/magisph) 提供巴西葡萄牙语本地化支持。
 
-也可以访问 [deskbox.fun](https://deskbox.fun)，或通过应用“关于”页面中的联系方式反馈。
+也可通过邮箱 [2560302707@qq.com](mailto:2560302707@qq.com) 或应用“关于”页面中的联系方式反馈。
 
 ## 作者与协议
 
-- 开发者：朱天雨
-- 项目地址：<https://github.com/Tianyu199509/DeskBox>
+- 开发者：郭嘉琦
+- 联系邮箱：[2560302707@qq.com](mailto:2560302707@qq.com)
+- 项目地址：<https://github.com/G2560302707/DeskBox>
 - 开源协议：[GPL-3.0-only](LICENSE)
 
 早期已按 MIT 协议发布的 DeskBox 版本继续保持原许可，协议变更不追溯历史版本。
@@ -320,4 +321,4 @@ DeskBox 目前由个人独立开发和维护。为了保持架构一致性与后
 
 如果 DeskBox 对你有帮助，欢迎点一个 Star ⭐，这是对这个独立项目最大的鼓励。
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Tianyu199509/DeskBox&type=Date)](https://star-history.com/#Tianyu199509/DeskBox&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=G2560302707/DeskBox&type=Date)](https://star-history.com/#G2560302707/DeskBox&Date)
